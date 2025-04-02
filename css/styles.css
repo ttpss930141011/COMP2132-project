@@ -1,0 +1,372 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  background-color: #0a1017;
+  position: relative;
+  color: #ffffff;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../images/bg.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 0.15;
+  z-index: -1;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.game-title {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 2.5rem;
+  color: #ffcc00;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Game layout */
+.game-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+@media (min-width: 768px) {
+  .game-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Hangman display */
+.hangman-display {
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.hangman-image-container {
+  background-color: #0a1017;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  width: 100%;
+  border: 2px solid #0066ff;
+}
+
+/* Pac-Man game area */
+.pac-man-game-area {
+  position: relative;
+  height: 300px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0a1017;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  padding: 0 10%;
+  border: 2px solid #0066ff;
+}
+
+.pac-man-image {
+  position: absolute;
+  height: 80px;
+  width: auto;
+  transition: left 0.5s ease-in-out;
+  left: 10%;
+  z-index: 10;
+}
+
+.target-image {
+  position: absolute;
+  height: 80px;
+  width: auto;
+  right: 15%;
+  z-index: 5;
+}
+
+.guesses-text {
+  margin-top: 1rem;
+  color: #aaaaaa;
+}
+
+.game-description {
+  color: #cccccc;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Hint display */
+.hint-container {
+  background-color: #0a1722;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 2px solid #0066ff;
+  margin-bottom: 1.5rem;
+}
+.hint-container h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #ffcc00;
+}
+
+#hint-text {
+  color: #cccccc;
+}
+
+/* Word display */
+.word-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.letter-box {
+  width: 2.5rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid #cccccc;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.letter-box.letter-space {
+  width: 1.5rem;
+  border-bottom: none;
+}
+
+/* Keyboard */
+.keyboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.keyboard-key {
+  width: 2.5rem;
+  height: 3rem;
+  background-color: #0a1722;
+  color: #ffffff;
+  border: 2px solid #0066ff;
+  border-radius: 0.375rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.keyboard-key:hover:not(:disabled) {
+  background-color: #0066ff;
+}
+.keyboard-key:disabled {
+  background-color: #1c2836;
+  color: #4b5563;
+  cursor: not-allowed;
+  border-color: #1c2836;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+.modal.visible {
+  opacity: 1;
+}
+
+.modal-content {
+  background-color: #0a1017;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  max-width: 28rem;
+  width: 100%;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  border: 2px solid #0066ff;
+}
+.modal-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #ffcc00;
+}
+.modal-content p {
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.word-reveal {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+.word-reveal span {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #ffcc00;
+}
+
+/* Buttons */
+.btn-primary {
+  background-color: #ffcc00;
+  color: #0a1017;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+.btn-primary:hover {
+  background-color: rgb(204, 163.2, 0);
+}
+
+/* Loading and error screens */
+.loading-screen, .error-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+  background-color: #0a1017;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.loading-screen::before, .error-screen::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("../images/bg.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15;
+  z-index: -1;
+}
+
+.loading-text {
+  font-size: 1.5rem;
+  color: #ffcc00;
+  animation: pulse 1.5s infinite;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Utility classes */
+.hidden {
+  display: none;
+}
+
+.success-text {
+  color: #10b981;
+}
+
+.error-text {
+  color: #ef4444;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+.shake {
+  animation: shake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+  transform-origin: center;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}

@@ -1,0 +1,425 @@
+// Variables
+$font-family-base: 'Arial', sans-serif;
+$color-bg: #0a1017;
+$color-text: #ffffff;
+$color-text-secondary: #cccccc;
+$color-text-muted: #aaaaaa;
+$color-text-hint: #ffcc00;
+$color-hint-bg: #0a1722;
+$color-hint-border: #1a3045;
+$color-primary: #3b82f6;
+$color-primary-hover: #2563eb;
+$color-disabled: #1c2836;
+$color-disabled-text: #4b5563;
+$color-success: #10b981;
+$color-error: #ef4444;
+$color-modal-overlay: rgba(0, 0, 0, 0.7);
+$game-bg: #0a1017;
+$pac-man-yellow: #ffcc00;
+$maze-blue: #0066ff;
+
+$border-radius: 0.5rem;
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+$box-shadow-modal: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+
+$transition-default: 0.2s;
+$transition-fade: 0.3s;
+$transition-display: 1s;
+$transition-move: 0.5s;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+@mixin button-primary {
+  background-color: $pac-man-yellow;
+  color: $color-bg;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color $transition-default;
+  
+  &:hover {
+    background-color: darken($pac-man-yellow, 10%);
+  }
+}
+
+@mixin fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2000;
+}
+
+// Base styles
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $font-family-base;
+  background-color: $color-bg;
+  position: relative;
+  color: $color-text;
+  line-height: 1.6;
+  min-height: 100vh;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/bg.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    opacity: 0.15; // Lower opacity makes the background more faded
+    z-index: -1;
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.game-title {
+  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 2.5rem;
+  color: $pac-man-yellow;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Game layout */
+.game-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Hangman display */
+.hangman-display {
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity $transition-display ease-in-out;
+}
+
+.hangman-image-container {
+  background-color: $game-bg;
+  padding: 1.5rem;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  text-align: center;
+  width: 100%;
+  border: 2px solid $maze-blue;
+}
+
+/* Pac-Man game area */
+.pac-man-game-area {
+  position: relative;
+  height: 300px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $game-bg;
+  border-radius: $border-radius;
+  overflow: hidden;
+  padding: 0 10%;
+  border: 2px solid $maze-blue;
+}
+
+.pac-man-image {
+  position: absolute;
+  height: 80px;
+  width: auto;
+  transition: left $transition-move ease-in-out;
+  left: 10%;
+  z-index: 10;
+}
+
+.target-image {
+  position: absolute;
+  height: 80px;
+  width: auto;
+  right: 15%;
+  z-index: 5;
+}
+
+.guesses-text {
+  margin-top: 1rem;
+  color: $color-text-muted;
+}
+
+.game-description {
+  color: $color-text-secondary;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Hint display */
+.hint-container {
+  background-color: $color-hint-bg;
+  padding: 1rem;
+  border-radius: $border-radius;
+  border: 2px solid $maze-blue;
+  margin-bottom: 1.5rem;
+  
+  h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: $color-text-hint;
+  }
+}
+
+#hint-text {
+  color: $color-text-secondary;
+}
+
+/* Word display */
+.word-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.letter-box {
+  width: 2.5rem;
+  height: 3rem;
+  @include flex-center;
+  border-bottom: 2px solid $color-text-secondary;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  
+  &.letter-space {
+    width: 1.5rem;
+    border-bottom: none;
+  }
+}
+
+/* Keyboard */
+.keyboard-container {
+  @include flex-column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.keyboard-key {
+  width: 2.5rem;
+  height: 3rem;
+  background-color: $color-hint-bg;
+  color: $color-text;
+  border: 2px solid $maze-blue;
+  border-radius: 0.375rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color $transition-default;
+  
+  &:hover:not(:disabled) {
+    background-color: $maze-blue;
+  }
+  
+  &:disabled {
+    background-color: $color-disabled;
+    color: $color-disabled-text;
+    cursor: not-allowed;
+    border-color: $color-disabled;
+  }
+}
+
+/* Modal */
+.modal {
+  @include fullscreen-overlay;
+  background-color: $color-modal-overlay;
+  @include flex-center;
+  padding: 1rem;
+  opacity: 0;
+  transition: opacity $transition-fade;
+  z-index: 1000;
+  
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background-color: $game-bg;
+  border-radius: $border-radius;
+  padding: 2rem;
+  max-width: 28rem;
+  width: 100%;
+  box-shadow: $box-shadow-modal;
+  border: 2px solid $maze-blue;
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: $pac-man-yellow;
+  }
+  
+  p {
+    margin-bottom: 1rem;
+    color: $color-text;
+  }
+}
+
+.word-reveal {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  
+  span {
+    font-weight: bold;
+    text-transform: uppercase;
+    color: $pac-man-yellow;
+  }
+}
+
+/* Buttons */
+.btn-primary {
+  @include button-primary;
+  width: 100%;
+}
+
+/* Loading and error screens */
+.loading-screen, .error-screen {
+  @include fullscreen-overlay;
+  background-color: $color-bg;
+  position: relative;
+  @include flex-column;
+  align-items: center;
+  justify-content: center;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../images/bg.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.15;
+    z-index: -1;
+  }
+}
+
+.loading-text {
+  font-size: 1.5rem;
+  color: $pac-man-yellow;
+  animation: pulse 1.5s infinite;
+}
+
+.error-message {
+  color: $color-error;
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Utility classes */
+.hidden {
+  display: none;
+}
+
+.success-text {
+  color: $color-success;
+}
+
+.error-text {
+  color: $color-error;
+}
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+} 
+
+/* Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { 
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+.shake {
+  animation: shake 0.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+  transform-origin: center;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
