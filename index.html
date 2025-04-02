@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pac-Man Hangman Game</title>
+  <link rel="stylesheet" href="./css/styles.css">
+  <script src="./js/animations.js" defer></script>
+  <script src="./js/game.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1 class="game-title">Pac-Man Hangman Game</h1>
+    
+    <div class="game-container">
+      <div class="hangman-display">
+        <div class="hangman-image-container">
+          <div class="pac-man-game-area">
+            <img id="pac-man" src="./images/pac-man-fast.gif" alt="Pac-Man" class="pac-man-image">
+            <img id="target-image" src="./images/normal.png" alt="Target" class="target-image">
+          </div>
+          <p id="guesses-remaining" class="guesses-text">6 guesses remaining</p>
+          <p class="game-description">Guess the word before Pac-Man reaches the ghost!</p>
+        </div>
+      </div>
+      
+      <div class="game-info">
+        <div id="hint-display" class="hint-container">
+          <h3>Hint:</h3>
+          <p id="hint-text"></p>
+        </div>
+        
+        <div id="word-display" class="word-container"></div>
+      </div>
+    </div>
+    
+    <div id="keyboard" class="keyboard-container"></div>
+    
+    <div id="game-over-modal" class="modal hidden">
+      <div class="modal-content">
+        <h2 id="result-title"></h2>
+        <p id="result-message"></p>
+        <p id="word-reveal" class="word-reveal"></p>
+        <button id="play-again-btn" class="btn-primary">Play Again</button>
+      </div>
+    </div>
+    
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-text">Loading game...</div>
+    </div>
+    
+    <div id="error-screen" class="error-screen hidden">
+      <div class="error-message">Something went wrong</div>
+      <button id="reload-btn" class="btn-primary">Reload</button>
+    </div>
+  </div>
+
+ 
+</body>
+</html> 
