@@ -1,0 +1,62 @@
+[
+  {
+    "word": "javascript",
+    "hint": "A programming language commonly used for web development"
+  },
+  {
+    "word": "algorithm",
+    "hint": "A step-by-step procedure for solving a problem"
+  },
+  {
+    "word": "database",
+    "hint": "A structured collection of data"
+  },
+  {
+    "word": "variable",
+    "hint": "A storage location paired with an identifier"
+  },
+  {
+    "word": "function",
+    "hint": "A block of code designed to perform a particular task"
+  },
+  {
+    "word": "interface",
+    "hint": "A point where two systems meet and interact"
+  },
+  {
+    "word": "component",
+    "hint": "A reusable piece of code in modern web frameworks"
+  },
+  {
+    "word": "responsive",
+    "hint": "Design approach that adapts to different screen sizes"
+  },
+  {
+    "word": "framework",
+    "hint": "A platform for developing software applications"
+  },
+  {
+    "word": "debugging",
+    "hint": "The process of finding and resolving defects in software"
+  },
+  {
+    "word": "iteration",
+    "hint": "The repetition of a process in order to generate a sequence of outcomes"
+  },
+  {
+    "word": "recursion",
+    "hint": "A method where the solution depends on solutions to smaller instances"
+  },
+  {
+    "word": "inheritance",
+    "hint": "A mechanism where one class acquires properties of another"
+  },
+  {
+    "word": "abstraction",
+    "hint": "The process of hiding complex implementation details"
+  },
+  {
+    "word": "encapsulation",
+    "hint": "Bundling of data and methods that operate on that data"
+  }
+] 
